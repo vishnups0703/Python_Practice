@@ -1,0 +1,36 @@
+class Solution:
+    longest_pal = ""
+    def longest_palindrome(self,s):
+        longest_pal = ""
+  
+
+        
+
+        def expand_around_center(left, right):
+        # Since nonlocal might not be available in Python 2,
+        # we can access the outer scope's longest_pal using a closure.
+            longest_pal_closure = longest_pal  # Capture the current value
+
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                if right - left + 1 > len(longest_pal_closure):
+                 longest_pal_closure = s[left:right + 1]
+                left -= 1
+                right += 1
+
+            return longest_pal_closure  # Return the updated value
+
+  # Call the inner function to find palindromes
+        longest_pal = expand_around_center(0, 0)  # Start with any index
+
+        for i in range(1, len(s)):
+            result = expand_around_center(i, i)  # Odd length palindromes
+            longest_pal = max(longest_pal, result, key=len)  # Update longest_pal
+            result = expand_around_center(i, i + 1)  # Even length palindromes
+            longest_pal = max(longest_pal, result, key=len)  # Update longest_pal
+
+        return longest_pal
+
+help(Solution)
+
+test=Solution()
+print(test.longest_palindrome("ababc"))
