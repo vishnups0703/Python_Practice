@@ -1,6 +1,25 @@
-string="Vishnu"
-for i in range (len(string)-1):
-    if string[i]==string[i+1]:
-        print("True")
-    else:
-        print("False")
+class Solution:
+    def longestPalindrome(self, s):
+        longestPalindrome = ""
+
+        # Function to expand around the center and return the longest palindrome
+        def expand_around_center(left, right):
+            while left >= 0 and right < len(s) and s[left] == s[right]:
+                left -= 1
+                right += 1
+            # Return the palindrome substring
+            return s[left + 1:right]
+
+        # Loop through the string and check for odd and even length palindromes
+        for i in range(len(s)):
+            # Odd-length palindromes (single character center)
+            result = expand_around_center(i, i)
+            if len(result) > len(longestPalindrome):
+                longestPalindrome = result
+
+            # Even-length palindromes (two character center)
+            result = expand_around_center(i, i + 1)
+            if len(result) > len(longestPalindrome):
+                longestPalindrome = result
+
+        return longestPalindrome
